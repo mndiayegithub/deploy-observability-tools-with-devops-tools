@@ -1,20 +1,23 @@
 # EC2 Instance Variables
-region         = "us-west-2"
-ami_id         = "ami-03fd0aa14bd102718"
-instance_type  = "t4g.micro"
-key_name       = "techiescamp"
+region         = "us-east-1"
+#ami_id         = "ami-03fd0aa14bd102718"
+ami_id         = "ami-07caf09b362be10b8"
+#instance_type  = "t4g.micro"
+instance_type  = "t2.micro"
+key_name       = "ec2_prom"
 instance_count = 1
 volume-size = 20
 
 # VPC id
-vpc_id  = "vpc-0a5ca4a92c2e10163"
-subnet_ids     = ["subnet-058a7514ba8adbb07"]
+#vpc_id  = "vpc-0a5ca4a92c2e10163"
+vpc_id  = "vpc-089abb365cc0e2c1e"
+subnet_ids     = ["subnet-02d2dae33fe50fa32"]
 
 # Ec2 Tags
 name        = "prometheus-stack"
-owner       = "techiescamp"
+owner       = "mndiaye"
 environment = "dev"
-cost_center = "techiescamp-commerce"
+cost_center = "prom-commerce"
 application = "monitoring"
 
 # CIDR Ingress Variables
