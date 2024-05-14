@@ -140,7 +140,7 @@ terraform apply --var-file=../vars/ec2.tfvars
 Now we can connect to the AWS EC2 machine created using the public IP. Replace the key path/name and IP accordingly.
 
 ```
-chmod ec2_prom.pem
+chmod 400 ec2_prom.pem
 ssh -i ec2_prom.pem ec2-user@34.231.229.126
 ```
 
