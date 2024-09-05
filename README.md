@@ -212,3 +212,53 @@ With your server IP adress, you can now access all the apps on different ports.
 Now the stack deployment is done, the rest of the configuration and testing will be done using GUI.
 
 # Step 4 : Validate Prometheus Node Exporter Metrics
+
+If you visit http://your-ip-address:9090, you will be able to access the Prometheus dashboard as shown below. 
+
+Validate the targets, rules and configurations as shown below. The target would be Node exporter url.
+
+![validate_targets](images/validate_targets.png "validation targets")
+
+![validate_rules](images/validate_rules.png "validation rules")
+
+![validate_configurations](images/validate_configurations.png "validation configurations")
+
+Now let's execute a **PromQL** statement to view **`node_cpu_seconds_total`** metrics scrapped from the node exporter.
+
+```
+avg by (instance,mode) (irate(node_cpu_seconds_total{mode!='idle'}[1m]))
+```
+
+You should be able to see data in graph as shown below.
+
+![node_cpu_seconds_total](images/node_cpu_seconds_total.png "node_cpu_seconds_total from promQL")
+
+# Step 5 : Configure Grafana dashboards
+
+Now let's configure Grafana dashboards for the Node exporter metrics. 
+
+Grafana can be accessed at : http://your-ip-address:3000
+
+Use **admin** as username and password to login to Grafana. You can update the password in the next window if required.
+
+Now we need to add prometheus URL as the data source from Connections -> Add new connction -> Prometheus -> Add new data source.
+
+![Grafana_add_connection](images/grafana_add_connection.png "Grafana Add connection")
+
+![Grafana_connection_success](images/grafana_connection_success.png "Grafana_Connection_Success")
+
+# Step 6 : Configure Node Exporter Dashboard
+
+Grafana has many node exporter pre-built templates that will give us a ready to use dashboards for the key node exporter metrics. 
+
+To import a dashboard, go to Dashboards -> Create Dashboard -> Create Dashboard > Import Dashboard -> Type 10180 & click load -> Select Prometheus Data source -> Import.
+
+
+# Step 7 : Simulate & Test Alert Manager Alerts
+
+You can access the AlertManager
+
+Once the dashboard template is imported, you should be able to see all the node exporter metrics as shown below.
+
+
+
