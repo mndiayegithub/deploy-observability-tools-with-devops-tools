@@ -253,12 +253,61 @@ Grafana has many node exporter pre-built templates that will give us a ready to 
 
 To import a dashboard, go to Dashboards -> Create Dashboard -> Create Dashboard > Import Dashboard -> Type 10180 & click load -> Select Prometheus Data source -> Import.
 
-
-# Step 7 : Simulate & Test Alert Manager Alerts
-
-You can access the AlertManager
+![Grafana_dashboard import](images/grafana_dashboard_import.png "Grafana_Dashboard_Import")
 
 Once the dashboard template is imported, you should be able to see all the node exporter metrics as shown below.
 
+![Grafana_dashboard](images/grafana_dashboard_1.png "Grafana_Dashboard")
+![Grafana_dashboard](images/grafana_dashboard_2.png "Grafana_Dashboard")
+![Grafana_dashboard](images/grafana_dashboard_3.png "Grafana_Dashboard")
 
+# Step 7 : Simulate & Test Alert Manager Alerts
+
+You can access the AlertManager dashboard on http://your-ip-address:9093.
+
+![Alerts Manager](images/alerts_manager.png "Alerts Manager")
+
+Alert rules are already backed in to the prometheus configuration through `alertrules.yaml`. If you go the alerts option in the prometheus menu, you will be able to see the configured alerts as shown below.
+
+![Prometheus Alerts](images/prometheus_alerts.png "Prometheus Alerts")
+
+As you can see, all the alerts are in inactive stage. To test the alerts, we need to simulate these alerts using few linux utilities.
+
+You can also check the alert rules using the native promtool prometheus CLI. We need to run promtool command from inside the prometheus container as shown below.
+
+```
+sudo docker exec -it prometheus promtool check rules /etc/prometheus/alertrules.yml
+```
+
+## Test : High Storage & CPU Alert
+
+```
+dd if=/dev/zero of=testfile_16GB bs=1M count=16384; openssl speed -multi $(nproc --all) &
+```
+
+![Prometheus Alerts on High Storage & CPU](images/prometheus_alerts_cpu_storage.png "Prometheus Alerts on High Storage & CPU")
+
+Now we can check the Alert manager UI to confirm the fired alerts. 
+
+![Confirm Alerts](images/confirm_alerts_manager.png "Confirm Alerts on Manager Alerts")
+
+Now let's rollback the changes and see that fired alerts has been resolved.
+
+```
+rm testfile_16GB && kill $(pgrep openssl)
+```
+
+![Prometheus Alerts](images/prometheus_alerts.png "Prometheus Alerts")
+
+# Step 8 : Clean the setup 
+
+To destroy created resources from Terraform, execute the following command from your workstation.
+
+```
+terraform destroy --var-file=../vars/ec2.tfvars
+```
+
+## Conclusion
+
+As a quick recap, we learned to provision AWS infra using Terraform. Then, we brought up the Prometheus Observability stack using Docker Compose and configured Grafana to create Node Exporter metrics dashboard. And we simulated alerts to check the alerting validation.   
 
