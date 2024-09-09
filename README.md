@@ -273,7 +273,7 @@ Alert rules are already backed in to the prometheus configuration through `alert
 
 As you can see, all the alerts are in inactive stage. To test the alerts, we need to simulate these alerts using few linux utilities.
 
-You can also check the alert rules using the native promtool prometheus CLI. We need to run promtool command from inside the prometheus container as shown below.
+You can also check the alert rules using the native [promtool](https://prometheus.io/docs/prometheus/latest/command-line/promtool/) prometheus CLI. We need to run promtool command from inside the prometheus container as shown below.
 
 ```
 sudo docker exec -it prometheus promtool check rules /etc/prometheus/alertrules.yml
